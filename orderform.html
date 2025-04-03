@@ -33,19 +33,25 @@
             color: #4CAF50;
             font-size: 16px;
         }
-        /* Adjust PDF embedding for responsive design */
-        embed {
-            width: 100%;
-            height: 80vh; /* Use viewport height (vh) to maintain aspect ratio */
-            max-width: 100%;
-            border: none;
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
-        /* Media query for small screens */
-        @media (max-width: 600px) {
-            embed {
-                height: 60vh; /* Adjust the height on smaller screens */
-            }
+        input, textarea, button {
+            margin: 10px;
+            padding: 10px;
+            width: 80%;
+            max-width: 500px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
@@ -53,7 +59,20 @@
 
 <div class="container">
     <h1>Compass - Order Form</h1>
-    <embed src="orderform.html" type="application/pdf" />
+    
+    <form action="send_form.php" method="POST">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="order">Order Details:</label>
+        <textarea id="order" name="order" rows="5" required></textarea>
+
+        <button type="submit">Submit Order</button>
+    </form>
+
     <div class="back-link">
         <a href="index.html">Back to Company List</a>
     </div>
