@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Step Order Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .form-container {
+      width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .form-container h2 {
+      text-align: center;
+    }
+    .form-screen {
+      display: none;
+    }
+    .form-screen.active {
+      display: block;
+    }
+    .form-buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+    .form-buttons button {
+      padding: 10px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    .form-buttons button:disabled {
+      background-color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Order Form</h2>
+
+    <!-- Step 1 -->
+    <div id="screen1" class="form-screen active">
+      <h3>Step 1: Personal Information</h3>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name"><br><br>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email"><br><br>
+      
+      <div class="form-buttons">
+        <button disabled>Back</button>
+        <button id="next1" onclick="nextScreen(1)">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div id="screen2" class="form-screen">
+      <h3>Step 2: Shipping Information</h3>
+      <label for="address">Address:</label>
+      <input type="text" id="address" name="address"><br><br>
+      <label for="city">City:</label>
+      <input type="text" id="city" name="city"><br><br>
+      <label for="zip">Zip Code:</label>
+      <input type="text" id="zip" name="zip"><br><br>
+      
+      <div class="form-buttons">
+        <button id="back2" onclick="previousScreen(2)">Back</button>
+        <button id="next2" onclick="nextScreen(2)">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div id="screen3" class="form-screen">
+      <h3>Step 3: Order Details</h3>
+      <label for="product">Product:</label>
+      <input type="text" id="product" name="product"><br><br>
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" name="quantity"><br><br>
+
+      <div class="form-buttons">
+        <button id="back3" onclick="previousScreen(3)">Back</button>
+        <button id="next3" onclick="nextScreen(3)">Next</button>
+      </div>
+    </div>
+
+    <!-- Final Screen -->
+    <div id="finalScreen" class="form-screen">
+      <h3>Final Review</h3>
+      <p><strong>Name:</strong> <span id="finalName"></span></p>
+      <p><strong>Email:</strong> <span id="finalEmail"></span></p>
+      <p><strong>Address:</strong> <span id="finalAddress"></span></p>
+      <p><strong>City:</strong> <span id="finalCity"></span></p>
+      <p><strong>Zip Code:</strong> <span id="finalZip"></span></p>
+      <p><strong>Product:</strong> <span id="finalProduct"></span></p>
+      <p><strong>Quantity:</strong> <span id="finalQuantity"></span></p>
+      
+      <div class="form-buttons">
+        <button id="backFinal" onclick="previousScreen(4)">Back</button>
+        <button id="submit" onclick="submitForm()">Submit</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let formData = {
+      name: '',
+      email: '',
+      address: '',
+      city: '',
+      zip: '',
+      product: '',
+      quantity: ''
+    };
+
+    function nextScreen(screenNumber) {
+      if (screenNumber === 1) {
+        formData.name = document.getElementById('name').value;
+        formData.email = document.getElementById('email').value;
+      } else if (screenNumber === 2) {
+        formData.address = document.getElementById('address').value;
+        formData.city = document.getElementById('city').value;
+        formData.zip = document.getElementById('zip').value;
+      } else if (screenNumber === 3) {
+        formData.product = document.getElementById('product').value;
+        formData.quantity = document.getElementById('quantity').value;
+      }
+
+      // Show next screen and hide current screen
+      document.getElementById('screen' + screenNumber).classList.remove('active');
+      document.getElementById('screen' + (screenNumber + 1)).classList.add('active');
+    }
+
+    function previousScreen(screenNumber) {
+      // Show previous screen and hide current screen
+      document.getElementById('screen' + screenNumber).classList.remove('active');
+      document.getElementById('screen' + (screenNumber - 1)).classList.add('active');
+    }
+
+    function showFinalScreen() {
+      // Populate final screen with the saved form data
+      document.getElementById('finalName').textContent = formData.name;
+      document.getElementById('finalEmail').textContent = formData.email;
+      document.getElementById('finalAddress').textContent = formData.address;
+      document.getElementById('finalCity').textContent = formData.city;
+      document.getElementById('finalZip').textContent = formData.zip;
+      document.getElementById('finalProduct').textContent = formData.product;
+      document.getElementById('finalQuantity').textContent = formData.quantity;
+    }
+
+    function submitForm() {
+      alert('Form submitted successfully!');
+      // Here you would send formData to the server
+      console.log(formData);
+    }
+
+    // Call showFinalScreen when reaching the last step
+    document.getElementById('next3').onclick = function() {
+      showFinalScreen();
+      nextScreen(3);
+    };
+
+    // Initialize the form when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('next1').onclick = function() {
+        nextScreen(1);
+      };
+      document.getElementById('next2').onclick = function() {
+        nextScreen(2);
+      };
+    });
+  </script>
+</body>
+</html>
